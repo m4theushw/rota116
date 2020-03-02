@@ -1,6 +1,6 @@
 # Rota 116
 
-Do you find yourself having to restart frequently your bundler (webpack, parcel, etc) to change the proxy settings of your development server? This little command-line utility abstracts this for you allowing to change in realtime which one is used.
+Do you find yourself having to restart frequently your bundler (webpack, parcel, etc) to change the proxy settings of your development server to use another backend? This little command-line utility abstracts this for you allowing to change in realtime which one is used.
 
 ## Installation
 
