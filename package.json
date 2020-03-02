@@ -1,0 +1,15 @@
+{
+  "name": "rota116",
+  "version": "1.0.0",
+  "description": "A proxy manager for your app",
+  "main": "index.js",
+  "author": "Matheus Wichman",
+  "license": "MIT",
+  "bin": "./index.js",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.1",
+    "meow": "^6.0.1"
+  }
+}
