@@ -4,6 +4,7 @@ const path = require('path');
 const meow = require('meow');
 const express = require('express');
 const spawn = require('cross-spawn');
+const open = require('open');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const cli = meow('Usage: $ rota116 <port> [<command>]');
@@ -60,4 +61,8 @@ app.post('/_admin', function(req, res) {
 });
 
 app.use(proxy);
-app.listen(port);
+
+app.listen(port, function() {
+  console.log('Proxy server started on port ' + port);
+  open('http://localhost:' + port + '/_admin');
+});
