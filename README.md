@@ -12,32 +12,45 @@ yarn global add rota116
 
 ## Quick Start
 
-Create a `rota116.js` file in the root of your project with all backends you want to use. For example:
+Create a `.rota116.js` file in the root of your project following the example below:
 
 ```js
 module.exports = {
   backends: {
-    dev: 'http://localhost:8080',
-    staging: 'http://api.example.com'
+    local: 'http://localhost:8080',
+    dev: 'http://api-dev.example.com',
+    staging: 'http://api-staging.example.com',
   },
 }
 ```
 
-You can add to the object above any option of [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#options).
+> You can use above any option of [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware#options).
 
 In a terminal run:
 
 ```bash
-rota116 3000 npm start
-# or
-rota116 3000 yarn start
+rota116 3000
 ```
 
-This will start a proxy server on port 3000 and run the command passed. All requests sent to the proxy will be redirected to the selected backend. Don't forget to point to it on your bundler. In Webpack change the `webpack.js` file like below:
+This will start a proxy server on port 3000. You can point any request to http://localhost:3000 and it will be redirected to the selected backend. You can change which backend to use accessing the [admin page](http://localhost:3000/_admin).
+
+## Advanced Usage
+
+You can prefix your npm scripts with `rota116` to start the proxy before the command.
+
+```
+{
+  "scripts": {
+    "start": "rota116 3000 webpack-dev-server --config webpack.dev.js"
+  }
+}
+```
+
+## Webpack Example
 
 ```js
+// webpack.config.js
 module.exports = {
-  ...
   devServer: {
     inline: true,
     contentBase: path.resolve(__dirname, 'dist'),
@@ -51,11 +64,8 @@ module.exports = {
       }
     }
   },
-  ...
 }
 ```
-
-Navigate to http://localhost:3000/_admin to change the selected backend.
 
 ## License
 
