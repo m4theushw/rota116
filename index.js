@@ -31,7 +31,7 @@ if (commands.length) {
 }
 
 const app = express();
-const configPath = path.join(process.cwd(), './rota116.js');
+const configPath = path.join(process.cwd(), '.rota116.js');
 const { backends, ...otherOptions } = require(configPath);
 app.set('backend', Object.keys(backends)[0]);
 
