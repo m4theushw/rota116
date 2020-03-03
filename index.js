@@ -8,7 +8,7 @@ const open = require('open');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const cli = meow('Usage: $ rota116 <port> [<command>]');
-const [ port ] = cli.input;
+const [port] = cli.input;
 const commands = process.argv.slice(3);
 
 if (!cli.input.length) {
@@ -33,13 +33,17 @@ if (commands.length) {
 
 const app = express();
 const configPath = path.join(process.cwd(), '.rota116.js');
-const { backends, ...otherOptions } = require(configPath);
+const { backends, pathRewrite, ...otherOptions } = require(configPath);
 app.set('backend', Object.keys(backends)[0]);
 
 const proxy = createProxyMiddleware({
   target: backends[app.get('backend')],
   router: () => backends[app.get('backend')],
-  ...otherOptions
+  pathRewrite:
+    typeof pathRewrite === 'function'
+      ? (path, req) => pathRewrite(path, req, app.get('backend'))
+      : pathRewrite,
+  ...otherOptions,
 });
 
 app.use(express.urlencoded({ extended: false }));
@@ -51,7 +55,7 @@ app.get('/_admin', function(req, res) {
     backends: Object.keys(backends),
     currentUrl: req.protocol + '://' + req.get('host'),
     backendUrl: backends[app.get('backend')],
-    selectedBackend: app.get('backend')
+    selectedBackend: app.get('backend'),
   });
 });
 
