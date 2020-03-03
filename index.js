@@ -3,11 +3,12 @@
 const path = require('path');
 const meow = require('meow');
 const express = require('express');
-const { spawn } = require('child_process');
+const spawn = require('cross-spawn');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const cli = meow('Usage: $ rota116 <port> [<command>]');
-const [ port, ...commands ] = cli.input
+const [ port ] = cli.input;
+const commands = process.argv.slice(3);
 
 if (!cli.input.length) {
   console.error('Missing port');
@@ -15,18 +16,17 @@ if (!cli.input.length) {
 }
 
 if (commands.length) {
-  const command = spawn(commands[0], commands.slice(1))
-
-  command.stdout.on('data', function(data) {
-    console.log(`${data}`);
-  });
-
-  command.stderr.on('data', function(data) {
-    console.error(`${data}`);
-  });
-
-  command.on('close', function(code) {
-    console.log(`The command passed exited with code ${code}`)
+  const proc = spawn(commands[0], commands.slice(1), { stdio: 'inherit' });
+  proc.on('SIGTERM', () => proc.kill('SIGTERM'));
+  proc.on('SIGINT', () => proc.kill('SIGINT'));
+  proc.on('SIGBREAK', () => proc.kill('SIGBREAK'));
+  proc.on('SIGHUP', () => proc.kill('SIGHUP'));
+  proc.on('exit', (code, signal) => {
+    let crossEnvExitCode = code;
+    if (crossEnvExitCode === null) {
+      crossEnvExitCode = signal === 'SIGINT' ? 0 : 1;
+    }
+    process.exit(crossEnvExitCode);
   });
 }
 

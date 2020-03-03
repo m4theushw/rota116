@@ -7,6 +7,7 @@
   "license": "MIT",
   "bin": "./index.js",
   "dependencies": {
+    "cross-spawn": "^7.0.1",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.1",
