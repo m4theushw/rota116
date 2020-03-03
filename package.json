@@ -1,6 +1,6 @@
 {
   "name": "rota116",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A proxy manager for your app",
   "main": "index.js",
   "author": "Matheus Wichman",
