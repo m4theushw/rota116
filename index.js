@@ -50,7 +50,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get('/_admin', function(req, res) {
+app.get('/_admin', function (req, res) {
   res.render('index', {
     backends: Object.keys(backends),
     currentUrl: req.protocol + '://' + req.get('host'),
@@ -59,13 +59,15 @@ app.get('/_admin', function(req, res) {
   });
 });
 
-app.post('/_admin', function(req, res) {
+app.post('/_admin', function (req, res) {
   app.set('backend', req.body.backend);
   res.redirect('/_admin');
 });
 
+app.use(express.static('public'));
+
 app.use(proxy);
 
-app.listen(port, function() {
+app.listen(port, function () {
   console.log('Proxy server started on port ' + port);
 });
