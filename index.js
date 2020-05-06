@@ -68,5 +68,4 @@ app.use(proxy);
 
 app.listen(port, function() {
   console.log('Proxy server started on port ' + port);
-  open('http://localhost:' + port + '/_admin');
 });
